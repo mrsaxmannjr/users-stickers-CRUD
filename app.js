@@ -8,6 +8,7 @@ var cors = require('cors');
 
 var index = require('./routes/index');
 var user = require('./routes/user');
+var auth = require('./auth');
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
+app.use('/auth', auth);
 app.use('/', index);
 app.use('/user', user);
 
@@ -43,6 +45,11 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+
+  res.json({
+    message: err.message,
+    error: req.app.get('env') === 'development' ? err : {},
+  });
 });
 
 module.exports = app;
