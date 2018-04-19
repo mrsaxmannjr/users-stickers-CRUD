@@ -85,14 +85,15 @@ router.post('/login', (req, res, next) => {
                   signed: true,
                 });
                 res.json({
+                  id: user.id,
                   message: 'Logged in!🔓'
                 });
               } else {
-                next(new Error('Invalid Password'));
+                next(new Error('Invalid Login'));
               }
           });
         } else {
-          next(new Error('Invalid Username'));
+          next(new Error('Invalid Login'));
         }
       });
   } else {
